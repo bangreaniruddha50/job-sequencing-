@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>💼 Job Sequencing Problem (Greedy Algorithm)</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background-color: #0f172a;
+      color: #f8fafc;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #38bdf8;
+    }
+
+    table {
+      margin: 20px auto;
+      border-collapse: collapse;
+      width: 60%;
+      background-color: #1e293b;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #334155;
+    }
+
+    th {
+      background-color: #0ea5e9;
+      color: white;
+    }
+
+    tr:hover {
+      background-color: #334155;
+    }
+
+    .panel {
+      background-color: #1e3a8a;
+      border: 2px solid #38bdf8;
+      border-radius: 12px;
+      display: inline-block;
+      padding: 20px 30px;
+      margin-top: 20px;
+      text-align: left;
+      box-shadow: 0 0 10px #38bdf8;
+    }
+
+    .highlight {
+      color: #facc15;
+    }
+
+    button {
+      background-color: #10b981;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    button:hover {
+      background-color: #059669;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💼 Job Sequencing Using Greedy Algorithm</h1>
+
+  <table id="jobTable">
+    <thead>
+      <tr>
+        <th>Job ID</th>
+        <th>Deadline</th>
+        <th>Profit</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>J1</td><td>2</td><td>100</td></tr>
+      <tr><td>J2</td><td>1</td><td>19</td></tr>
+      <tr><td>J3</td><td>2</td><td>27</td></tr>
+      <tr><td>J4</td><td>1</td><td>25</td></tr>
+      <tr><td>J5</td><td>3</td><td>15</td></tr>
+    </tbody>
+  </table>
+
+  <button onclick="runJobSequencing()">Run Algorithm 🚀</button>
+
+  <div id="resultPanel" class="panel" style="display:none;">
+    <h2>📦 Result Summary</h2>
+    <p><strong class="highlight">Scheduled Jobs:</strong> <span id="scheduledJobs"></span></p>
+    <p><strong class="highlight">Total Profit:</strong> ₹<span id="totalProfit"></span></p>
+  </div>
+
+  <script>
+    function runJobSequencing() {
+      const jobs = [
+        { job_id: 'J1', deadline: 2, profit: 100 },
+        { job_id: 'J2', deadline: 1, profit: 19 },
+        { job_id: 'J3', deadline: 2, profit: 27 },
+        { job_id: 'J4', deadline: 1, profit: 25 },
+        { job_id: 'J5', deadline: 3, profit: 15 }
+      ];
+
+      // Sort jobs by profit in descending order
+      jobs.sort((a, b) => b.profit - a.profit);
+
+      const n = jobs.length;
+      const result = Array(n).fill(null);
+      const slot = Array(n).fill(false);
+      let totalProfit = 0;
+
+      // Greedy scheduling
+      for (let job of jobs) {
+        for (let j = Math.min(n, job.deadline) - 1; j >= 0; j--) {
+          if (!slot[j]) {
+            slot[j] = true;
+            result[j] = job;
+            totalProfit += job.profit;
+            break;
+          }
+        }
+      }
+
+      const scheduledJobs = result.filter(job => job !== null).map(job => job.job_id);
+
+      // Show results
+      document.getElementById("scheduledJobs").textContent = scheduledJobs.join(", ");
+      document.getElementById("totalProfit").textContent = totalProfit;
+      document.getElementById("resultPanel").style.display = "block";
+    }
+  </script>
+
+</body>
+</html>
